@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Best Shop</title>
+</head>
+<body>
+<h1>Добро пожаловать! Мы рады видеть вас в нашем магазине!</h1>
+
+<p>Сейчас {% now "H:i"%}</p>
+
+<h1>Мы можем вам предложить</h1>
+<ul>
+    {% for name, price in items %}
+    <li>{{ name|upper }} за {{price}} рублей</li>
+    {% with name_length=name|length %}
+    {% if price < 100 %}
+    {% if name_length >= 6 %}
+    <p>Ух длинное слово😮‍💨 Но зато отличная цена!</p>
+    {% else %}
+    <p>Отличная цена!</p>
+    {% endif %}
+    {% endif %}
+    {% endwith %}
+    {% endfor %}
+</ul>
+</body>
+</html>
