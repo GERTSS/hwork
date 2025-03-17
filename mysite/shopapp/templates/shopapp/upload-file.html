@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload File</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>
+            <label for="file">Chose File</label>
+            <input type="file" name="file" id="file" required>
+        </p>
+        <button type="submit">Upload</button>
+    </form>
+<div>
+    {% if message %}
+    <p>
+        {{ message }}
+    </p>
+    {% endif %}
+</div>
+</body>
+</html>
