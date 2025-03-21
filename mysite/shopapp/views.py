@@ -7,6 +7,7 @@ from shopapp.models import Product, Order
 import os
 import uuid
 import logging
+from shopapp.forms import ProductForm, OrderForm
 
 logger = logging.getLogger('shoapapp')
 
@@ -66,3 +67,31 @@ def upload_file(request: HttpRequest):
         return render(request, 'shopapp/upload-file.html', context={'message': message})
     else:
         return render(request, 'shopapp/upload-file.html')
+
+
+def create_product(request: HttpRequest):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_products')
+        else:
+            return render(request, 'shopapp/create-product.html',
+                          context={'form': form, 'message': 'Не валидные данные'})
+    else:
+        form = ProductForm()
+        return render(request, 'shopapp/create-product.html', context={'form': form})
+
+
+def create_order(request: HttpRequest):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_products')
+        else:
+            return render(request, 'shopapp/create-order.html',
+                          context={'form': form, 'message': 'Не валидные данные'})
+    else:
+        form = OrderForm()
+        return render(request, 'shopapp/create-order.html', context={'form': form})
