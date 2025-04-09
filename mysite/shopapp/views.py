@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest
-from django.urls import get_resolver, Resolver404
+from django.http import HttpRequest, HttpResponseRedirect
+from django.urls import get_resolver, Resolver404, reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views import View
 
 import mysite.settings
 from shopapp.models import Product, Order
@@ -33,18 +35,28 @@ def list_urls(request: HttpRequest):
     return render(request, 'shopapp/index.html', context={'items': urls})
 
 
-def list_products(request: HttpRequest):
-    context = {
-        'products': Product.objects.all()
-    }
-    return render(request, 'shopapp/list_products.html', context=context)
+class ProductsListView(ListView):
+    queryset = Product.objects.filter(being_under_sanctions=False)
+    template_name = 'shopapp/list_products.html'
+    context_object_name = 'products'
 
 
-def list_orders(request: HttpRequest):
-    context = {
-        'orders': Order.objects.select_related('user').prefetch_related('products').all()
-    }
-    return render(request, 'shopapp/list_orders.html', context=context)
+class ProductDetailsView(DetailView):
+    queryset = Product.objects.filter(being_under_sanctions=False)
+    template_name = 'shopapp/products_details.html'
+    context_object_name = 'product'
+
+
+class OrdersListView(ListView):
+    queryset = Order.objects.filter(is_archived=False).select_related('user').prefetch_related('products')
+    template_name = 'shopapp/list_orders.html'
+    context_object_name = 'orders'
+
+
+class OrdersDetailsView(DetailView):
+    queryset = Order.objects.filter(is_archived=False).select_related('user').prefetch_related('products')
+    template_name = 'shopapp/order_details.html'
+    context_object_name = 'order'
 
 
 def upload_file(request: HttpRequest):
@@ -69,29 +81,51 @@ def upload_file(request: HttpRequest):
         return render(request, 'shopapp/upload-file.html')
 
 
-def create_product(request: HttpRequest):
-    if request.method == 'POST':
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list_products')
-        else:
-            return render(request, 'shopapp/create-product.html',
-                          context={'form': form, 'message': 'Не валидные данные'})
-    else:
-        form = ProductForm()
-        return render(request, 'shopapp/create-product.html', context={'form': form})
+class ProductCreateView(CreateView):
+    model = Product
+    template_name = 'shopapp/create-product.html'
+    success_url = reverse_lazy('list_products')
 
 
-def create_order(request: HttpRequest):
-    if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list_products')
-        else:
-            return render(request, 'shopapp/create-order.html',
-                          context={'form': form, 'message': 'Не валидные данные'})
-    else:
-        form = OrderForm()
-        return render(request, 'shopapp/create-order.html', context={'form': form})
+class OrderCreateView(CreateView):
+    model = Product
+    template_name = 'shopapp/create-order.html'
+    success_url = reverse_lazy('list_orders')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    template_name = 'shopapp/update-product.html'
+    fields = 'name', 'description', 'price', 'rating'
+    success_url = reverse_lazy('shopapp:list_products')
+
+
+class OrderUpdateView(UpdateView):
+    model = Order
+    template_name = 'shopapp/update-order.html'
+    fields = 'address', 'promocode', 'user', 'products'
+    success_url = reverse_lazy('shopapp:list_orders')
+
+
+class ProductArchiveView(DeleteView):
+    model = Product
+    template_name = 'shopapp/archive-product.html'
+    success_url = reverse_lazy('shopapp:list_products')
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.being_under_sanctions = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
+
+
+class OrderArchiveView(DeleteView):
+    model = Order
+    template_name = 'shopapp/archive-order.html'
+    success_url = reverse_lazy('shopapp:list_orders')
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.is_archived = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
