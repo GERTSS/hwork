@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order details</title>
+</head>
+<body>
+<h1>Детали заказа {{ order.pk }}</h1>
+    <p>Адрес: {{ order.address }}</p>
+    {% if order.promocode %}
+        <p>Промокод: {{ order.promocode }}</p>
+    {% endif %}
+    <p>Дата создания: {{ order.date_create }}</p>
+    <p>Создатель заказ: {{ order.user }}</p>
+    <p>Продукты:
+        {% for product in order.products.all %}
+            <li>
+                <a href='{% url "shopapp:product_details" product.pk %}'>{{ product.name }}</a>
+            </li>
+        {% endfor %}
+    </p>
+<div>
+    <a href="{% url 'shopapp:list_orders' %}">К списку заказов</a>
+</div>
+<div>
+    <a href="{% url 'shopapp:update_order' order.pk %}">Изменить заказ</a>
+</div>
+<div>
+    <a href="{% url 'shopapp:archive_order' order.pk %}">Архивировать заказ</a>
+</div>
+</body>
+</html>

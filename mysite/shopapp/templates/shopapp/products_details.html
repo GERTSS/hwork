@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product details</title>
+</head>
+<body>
+<h1>Детали продукта {{ product.name }}</h1>
+    <p>Название: {{ product.name }}</p>
+    <p>Описание: {{ product.description }}</p>
+    <p>Цена: {{ product.price }}</p>
+    <p>Рейтинг: {{ product.rating }}</p>
+    <p>Дата добавления: {{ product.date_added }}</p>
+<div>
+    <a href="{% url 'shopapp:list_products' %}">К списку продуктов</a>
+</div>
+<div>
+    <a href="{% url 'shopapp:update_products' product.pk %}">Изменить продукт</a>
+</div>
+<div>
+    <a href="{% url 'shopapp:archive_product' product.pk %}">Архивировать продукт</a>
+</div>
+</body>
+</html>

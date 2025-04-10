@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Archive product</title>
+</head>
+<body>
+    <h1>Вы уверены, что теперь продукт находиться под санкциями?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <button type="submit">Да</button>
+        </div>
+    </form>
+    <div>
+        <a href="{% url 'shopapp:list_products' %}">К списку продуктов</a>
+    </div>
+</body>
+</html>

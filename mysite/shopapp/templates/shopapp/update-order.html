@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Обнови Заказ!</title>
+</head>
+<body>
+    {% if message %}
+    <p>
+        {{ message }}
+    </p>
+    {% endif %}
+  <div>
+    <form method="post">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit">
+        Submit
+      </button>
+    </form>
+  </div>
+  <a href="{% url 'shopapp:list_orders' %}">Список заказов</a>
+</body>
+</html>

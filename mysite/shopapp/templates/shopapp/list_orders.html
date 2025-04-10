@@ -11,7 +11,7 @@
             <li>
                 {{ order.user }}
             </li>
-            <p>{{ order.address }}</p>
+            <a href="{% url 'shopapp:order_details' order.pk %}">{{ order.address }}</a>
             <ul>
                 {% for product in order.products.all %}
                     <li>{{ product.name }} - {{ product.price }}</li>
