@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponseRedirect
 from django.urls import get_resolver, Resolver404, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.views import View
 
 import mysite.settings
 from shopapp.models import Product, Order
