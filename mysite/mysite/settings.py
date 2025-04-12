@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shopapp.apps.ShopappConfig',
+    'myauth.apps.MyAuthConfig',
 ]
 
 MIDDLEWARE = [
@@ -145,3 +146,7 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger('shopapp')
+
+LOGIN_REDIRECT_URL = 'admin/'
+
+LOGOUT_REDIRECT_URL = 'myauth/login/'
