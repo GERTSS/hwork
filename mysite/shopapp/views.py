@@ -1,10 +1,12 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden
 from django.urls import get_resolver, Resolver404, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 import mysite.settings
 from shopapp.models import Product, Order
+from shopapp.mixins import CanUpdateProductMixin
 import os
 import uuid
 import logging
@@ -25,6 +27,9 @@ def list_urls(request: HttpRequest):
                     recursive_handler(pattern.url_patterns, prefix + str(pattern.pattern))
                 else:
                     test_url = prefix + str(pattern.pattern)
+                    if test_url == '/shop/products/create/':
+                        if not request.user.has_perm('shopapp.add_product'):
+                            continue
                     test = urlconf.resolve(test_url)
                     if test:
                         urls.append(test_url)
@@ -80,19 +85,31 @@ def upload_file(request: HttpRequest):
         return render(request, 'shopapp/upload-file.html')
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(PermissionRequiredMixin, CreateView):
     model = Product
+    fields = ['name', 'description', 'price']
     template_name = 'shopapp/create-product.html'
-    success_url = reverse_lazy('list_products')
+    success_url = reverse_lazy('shopapp:list_products')
+
+    permission_required = 'shopapp.add_product'
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
+        return HttpResponseForbidden('У вас недостаточно прав')
+
+    def form_valid(self, form):
+        form.instance.crated_by = self.request.user.profile
+        return super().form_valid(form)
 
 
 class OrderCreateView(CreateView):
     model = Product
     template_name = 'shopapp/create-order.html'
-    success_url = reverse_lazy('list_orders')
+    success_url = reverse_lazy('shopapp:list_orders')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(CanUpdateProductMixin, UpdateView):
     model = Product
     template_name = 'shopapp/update-product.html'
     fields = 'name', 'description', 'price', 'rating'

@@ -14,6 +14,7 @@ urlpatterns = [
         ),
         name='login'
     ),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('session/get/', views.GetSession.as_view(), name='getsession'),
     path('session/set/', views.SetSession.as_view(), name='setsession'),
     path('cookies/get/', views.GetCookies.as_view(), name='getcookies'),
