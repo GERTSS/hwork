@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from myauth.models import Profile
+
 
 class Product(models.Model):
     name = models.CharField(max_length=20, null=False)
@@ -9,6 +11,7 @@ class Product(models.Model):
     rating = models.PositiveSmallIntegerField(null=False, default=0)
     date_added = models.DateTimeField(auto_now_add=True)
     being_under_sanctions = models.BooleanField(default=False)
+    crated_by = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='products')
 
 
 class Order(models.Model):
