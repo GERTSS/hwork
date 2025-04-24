@@ -1,0 +1,28 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$320000$bCJJufrzLXnU8PJMP8hzzS$/cD26w2InnH96pzVDCmVT0Pi+mFH5CKyQuNOdKKPfgw=",
+      "last_login": "2025-04-07T18:34:58.705Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-02-22T18:06:32.850Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "myauth.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "bio": null
+    }
+  }
+]

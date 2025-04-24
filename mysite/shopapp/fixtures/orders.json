@@ -1,0 +1,50 @@
+[
+  {
+    "model": "shopapp.order",
+    "pk": 1,
+    "fields": {
+      "address": "Main Street 1",
+      "promocode": "",
+      "date_create": "2025-02-22T18:06:33.147Z",
+      "user": 1,
+      "is_archived": true,
+      "products": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  {
+    "model": "shopapp.order",
+    "pk": 35,
+    "fields": {
+      "address": "WallStreat",
+      "promocode": "1000",
+      "date_create": "2025-03-20T19:49:48.627Z",
+      "user": 1,
+      "is_archived": true,
+      "products": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "shopapp.order",
+    "pk": 36,
+    "fields": {
+      "address": "wallstreat",
+      "promocode": "",
+      "date_create": "2025-03-20T19:54:56.633Z",
+      "user": 1,
+      "is_archived": false,
+      "products": [
+        2,
+        3
+      ]
+    }
+  }
+]

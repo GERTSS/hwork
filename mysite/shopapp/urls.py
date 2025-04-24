@@ -17,4 +17,5 @@ urlpatterns = [
     path('orders/update/<int:pk>', views.OrderUpdateView.as_view(), name='update_order'),
     path('products/archive/<int:pk>', views.ProductArchiveView.as_view(), name='archive_product'),
     path('orders/archive/<int:pk>', views.OrderArchiveView.as_view(), name='archive_order'),
+    path('orders/export', views.OrderExportView.as_view(), name='orders_get_copy'),
 ]
