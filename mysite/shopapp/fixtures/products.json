@@ -1,0 +1,54 @@
+[
+  {
+    "model": "shopapp.product",
+    "pk": 1,
+    "fields": {
+      "name": "HyperX",
+      "description": null,
+      "price": "100000.00",
+      "rating": 0,
+      "date_added": "2025-02-22T17:54:48.536Z",
+      "being_under_sanctions": false,
+      "crated_by": 1
+    }
+  },
+  {
+    "model": "shopapp.product",
+    "pk": 2,
+    "fields": {
+      "name": "iPhone",
+      "description": "text 2",
+      "price": "5500.00",
+      "rating": 0,
+      "date_added": "2025-02-22T17:54:48.554Z",
+      "being_under_sanctions": false,
+      "crated_by": 1
+    }
+  },
+  {
+    "model": "shopapp.product",
+    "pk": 3,
+    "fields": {
+      "name": "Phone 2",
+      "description": "some text 2",
+      "price": "1000.00",
+      "rating": 0,
+      "date_added": "2025-03-20T19:28:38.933Z",
+      "being_under_sanctions": true,
+      "crated_by": 1
+    }
+  },
+  {
+    "model": "shopapp.product",
+    "pk": 4,
+    "fields": {
+      "name": "samsung",
+      "description": "",
+      "price": "1250.00",
+      "rating": 0,
+      "date_added": "2025-04-19T19:33:29.844Z",
+      "being_under_sanctions": false,
+      "crated_by": 1
+    }
+  }
+]

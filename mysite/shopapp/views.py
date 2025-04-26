@@ -1,7 +1,10 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden, JsonResponse
 from django.urls import get_resolver, Resolver404, reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 import mysite.settings
@@ -145,3 +148,23 @@ class OrderArchiveView(DeleteView):
         self.object.is_archived = True
         self.object.save()
         return HttpResponseRedirect(success_url)
+
+
+@method_decorator(user_passes_test(lambda u: u.is_staff, login_url='/accounts/login/'), name='dispatch')
+class OrderExportView(View):
+
+    def get(self, request):
+        orders = Order.objects.all()
+        result = [
+            {
+                'id': order.pk,
+                'address': order.address,
+                'promocode': order.promocode,
+                'products': [product.pk for product in order.products.all()],
+                'user': order.user.pk
+            }
+            for order in orders
+        ]
+        return JsonResponse({'orders': result})
+
+
