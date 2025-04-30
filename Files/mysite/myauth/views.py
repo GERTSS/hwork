@@ -11,7 +11,7 @@ from .models import Profile
 
 
 class AboutMeView(TemplateView):
-    template_name = "myauth/about-me.html"
+    template_name = "myauth/about-user.html"
 
 
 class RegisterView(CreateView):

@@ -19,4 +19,8 @@ urlpatterns = [
     path('session/set/', views.SetSession.as_view(), name='setsession'),
     path('cookies/get/', views.GetCookies.as_view(), name='getcookies'),
     path('cookies/set/', views.SetCookies.as_view(), name='setcookies'),
+    path('user/info/<int:pk>/', views.UserInfoView.as_view(), name='user_details'),
+    path('user/info/', views.UserInfoView.as_view(), name='about_me'),
+    path('user/update/<int:pk>/', views.UserInfoUpdateView.as_view(), name='update_user_info'),
+    path('users/', views.UsersListView.as_view(), name='users_list'),
 ]
