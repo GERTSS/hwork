@@ -12,7 +12,7 @@ def gen_image_path(instance: 'Profile', filename: str):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True, null=True)
-    avatar = models.ImageField(upload_to=gen_image_path)
+    avatar = models.ImageField(upload_to=gen_image_path, null=True)
 
 
 

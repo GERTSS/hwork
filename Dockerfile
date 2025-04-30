@@ -11,7 +11,7 @@ EXPOSE 8000
 WORKDIR /mysite
 
 CMD ["sh", "-c", \
-"manage.py makemigrations && \
+"python manage.py makemigrations && \
 python manage.py migrate && \
 python manage.py create_products && \
 python manage.py create_orders && \
