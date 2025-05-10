@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden, JsonResponse
 from django.urls import get_resolver, Resolver404, reverse_lazy

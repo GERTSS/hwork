@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User info</title>
+</head>
+<body>
+    <div>
+        <p>Name: {{ user_info.username }}</p>
+        <p>Email: {{ user_info.email }}</p>
+        <p>Bio: {{ user_info.profile.bio }}</p>
+        {% if user_info.profile.avatar %}
+            <img src="{{ user_info.profile.avatar.url }}">
+        {% else %}
+            <p>Аватар не загружен</p>
+        {% endif %}
+    </div>
+    <div>
+        {% if perm.myauth.change_profile or user.pk == user_info.pk %}
+            <p><a href="{% url 'myauth:update_user_info' user_info.pk %}">Изменить данные</a></p>
+        {% endif %}
+        <p><a href="{% url 'myauth:users_list' %}">На главную</a></p>
+    </div>
+</body>
+</html>

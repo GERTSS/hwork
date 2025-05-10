@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Users</title>
+</head>
+<body>
+    <h1>Пользователи</h1>
+    <ul>
+        {% for profile in profiles %}
+            <li>
+                <p>Name: <a href='{% url "shopapp:user_details" profile.user.pk %}'>{{ profile.user.username }}</a></p>
+                <p>Email: {{ profile.user.email }}</p>
+                <p>Bio: {{ profile.bio }}</p>
+                {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}">
+                {% else %}
+                    <p>Аватар не загружен</p>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
