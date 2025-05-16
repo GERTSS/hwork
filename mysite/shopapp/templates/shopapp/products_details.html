@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load i18n %}
 <head>
     <meta charset="UTF-8">
-    <title>Product details</title>
+    <title>{% translate 'Product details' %}</title>
 </head>
 <body>
-<h1>Детали продукта {{ product.name }}</h1>
-    <p>Название: {{ product.name }}</p>
-    <p>Описание: {{ product.description }}</p>
-    <p>Цена: {{ product.price }}</p>
-    <p>Рейтинг: {{ product.rating }}</p>
-    <p>Дата добавления: {{ product.date_added }}</p>
+<h1>{% translate "Детали продукта" %} {{ product.name }}</h1>
+    <p>{% translate 'Название' %}: {{ product.name }}</p>
+    <p>{% translate 'Описание' %}: {{ product.description }}</p>
+    {% blocktranslate count product.price=|floatformat:0 %}
+            <p>Цена: {{ product.price }} рубль</p>
+        {% plural %}
+            <p>Цена: {{ product.price }} рублей</p>
+    {% endblocktranslate %}
+    <p>{% translate 'Рейтинг' %}: {{ product.rating }}</p>
+    <p>{% translate 'Дата добавления' %}: {{ product.date_added }}</p>
 <div>
-    <a href="{% url 'shopapp:list_products' %}">К списку продуктов</a>
+    <a href="{% url 'shopapp:list_products' %}">{% translate "К списку продуктов" %}</a>
 </div>
 <div>
-    <a href="{% url 'shopapp:update_products' product.pk %}">Изменить продукт</a>
+    <a href="{% url 'shopapp:update_products' product.pk %}">{% translate "Изменить продукт" %}</a>
 </div>
 <div>
-    <a href="{% url 'shopapp:archive_product' product.pk %}">Архивировать продукт</a>
+    <a href="{% url 'shopapp:archive_product' product.pk %}">{% translate 'Архивировать продукт' %}</a>
 </div>
 </body>
 </html>

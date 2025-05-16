@@ -1,10 +1,14 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from myauth.models import Profile
 
-
 class Product(models.Model):
+    class Meta:
+        verbose_name = _('Product')
+        verbose_name_plural = _('Products')
+
     name = models.CharField(max_length=20, null=False)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -15,6 +19,10 @@ class Product(models.Model):
 
 
 class Order(models.Model):
+    class Meta:
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
+
     address = models.TextField(null=False)
     promocode = models.CharField(max_length=20, null=False, blank=True)
     date_create = models.DateTimeField(auto_now_add=True)
