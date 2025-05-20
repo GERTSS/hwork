@@ -168,4 +168,25 @@ class OrderExportView(View):
         ]
         return JsonResponse({'orders': result})
 
+from rest_framework import viewsets
+from shopapp.serializers import OrderSerializer, ProductSerializer
+from rest_framework.response import Response
 
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    search_fields = ['address', 'promocode']
+    ordering_fields = ['address']
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    search_fields = ['name', 'description']
+    ordering_fields = ['name', 'description', 'price']
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(crated_by=request.user.profile)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=201, headers=headers)

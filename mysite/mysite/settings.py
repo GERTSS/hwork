@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shopapp.apps.ShopappConfig',
     'myauth.apps.MyAuthConfig',
+    'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -165,3 +167,12 @@ logger = logging.getLogger('shopapp')
 LOGIN_REDIRECT_URL = 'admin/'
 
 LOGOUT_REDIRECT_URL = 'myauth/login/'
+
+REST_FRAMEWORK ={
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}

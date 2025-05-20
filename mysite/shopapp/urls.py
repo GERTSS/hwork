@@ -1,10 +1,16 @@
 from . import views
+from rest_framework.routers import DefaultRouter
 
-from django.urls import path
+from django.urls import path, include
+
+router = DefaultRouter()
+router.register('products/', views.ProductViewSet)
+router.register('orders/', views.OrderViewSet)
 
 app_name = 'shopapp'
 
 urlpatterns = [
+    path('api/', include(router.urls)),
     path('', views.list_urls, name='index'),
     path('products/', views.ProductsListView.as_view(), name='list_products'),
     path('products/<int:pk>', views.ProductDetailsView.as_view(), name='product_details'),
