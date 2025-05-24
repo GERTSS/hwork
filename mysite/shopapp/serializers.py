@@ -33,7 +33,7 @@ class ProductSerializer(serializers.ModelSerializer):
         }
 
 class OrderSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializer(read_only=True)
     product_ids = serializers.PrimaryKeyRelatedField(many=True,
                                                       queryset=Product.objects.all(),
                                                       source='products',

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'myauth.apps.MyAuthConfig',
     'rest_framework',
     'django_filters',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -175,4 +176,12 @@ REST_FRAMEWORK ={
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'My Django API',
+    'DESCRIPTION': 'API для управления объектами ShopApp с поддержкой поиска, фильтрации и сортировки.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': True,
 }

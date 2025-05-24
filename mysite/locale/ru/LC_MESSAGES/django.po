@@ -40,15 +40,15 @@ msgstr "Детали Продукта"
 
 #: shopapp/templates/shopapp/products_details.html:9
 msgid "Детали продукта"
-msgstr ""
+msgstr "Детали продукта"
 
 #: shopapp/templates/shopapp/products_details.html:10
 msgid "Название"
-msgstr ""
+msgstr "Название"
 
 #: shopapp/templates/shopapp/products_details.html:11
 msgid "Описание"
-msgstr ""
+msgstr "Описание"
 
 #: shopapp/templates/shopapp/products_details.html:12
 #, python-format
@@ -75,20 +75,20 @@ msgstr[2] ""
 
 #: shopapp/templates/shopapp/products_details.html:17
 msgid "Рейтинг"
-msgstr ""
+msgstr "Рейтинг"
 
 #: shopapp/templates/shopapp/products_details.html:18
 msgid "Дата добавления"
-msgstr ""
+msgstr "Дата добавления"
 
 #: shopapp/templates/shopapp/products_details.html:20
 msgid "К списку продуктов"
-msgstr ""
+msgstr "К списку продуктов"
 
 #: shopapp/templates/shopapp/products_details.html:23
 msgid "Изменить продукт"
-msgstr ""
+msgstr "Изменить продукт"
 
 #: shopapp/templates/shopapp/products_details.html:26
 msgid "Архивировать продукт"
-msgstr ""
+msgstr "Архивировать продукт"

@@ -9,10 +9,10 @@
 <h1>{% translate "Детали продукта" %} {{ product.name }}</h1>
     <p>{% translate 'Название' %}: {{ product.name }}</p>
     <p>{% translate 'Описание' %}: {{ product.description }}</p>
-    {% blocktranslate count product.price=|floatformat:0 %}
-            <p>Цена: {{ product.price }} рубль</p>
+    {% blocktranslate count price=product.price %}
+            <p>Цена: {{ price }} рубль</p>
         {% plural %}
-            <p>Цена: {{ product.price }} рублей</p>
+            <p>Цена: {{ price }} рублей</p>
     {% endblocktranslate %}
     <p>{% translate 'Рейтинг' %}: {{ product.rating }}</p>
     <p>{% translate 'Дата добавления' %}: {{ product.date_added }}</p>
