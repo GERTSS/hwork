@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shopapp.apps.ShopappConfig',
     'myauth.apps.MyAuthConfig',
+    'blogapp.apps.BlogappConfig',
     'rest_framework',
     'django_filters',
     'drf_spectacular',

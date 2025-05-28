@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Articles</title>
+</head>
+<body>
+    <h1>List Articles</h1>
+        <ul>
+            {% for article in articles %}
+                <li>{{ article.title }}</li>
+                <li>{{ article.pub_date }}</li>
+                <li>{{ article.author.name }}</li>
+                <li>{{ article.category.name }}</li>
+                {% for tag in article.tags.all %}
+                    <li>{{ tag.name }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+</body>
+</html>
