@@ -27,8 +27,29 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       DATABASE_NAME: postgres
+    logging:
+      driver: "loki"
+      options:
+        loki-url: http://host.docker.internal:3100/loki/api/v1/push
     depends_on:
       - db
+    networks:
+      - mynetwork
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    networks:
+      - mynetwork
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
       - mynetwork
 

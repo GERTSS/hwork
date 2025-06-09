@@ -12,3 +12,4 @@ sqlparse==0.5.3
 djangorestframework==3.16.0
 django-filter==25.1
 drf-spectacular==0.28.0
+django-debug-toolbar==4.0.0

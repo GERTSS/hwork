@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 
 import django.middleware.locale
+from django.conf.global_settings import INTERNAL_IPS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,16 @@ SECRET_KEY = 'django-insecure-yl^jf5%3)1)ka-ery7pg+3%hv8@o3z&zo1dm%5=06xnc7w$z@4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+INTERNAL_IPS = [
+    "127.0.0.1"
+]
+
+if DEBUG:
+    import socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS.extend(ip[: ip.rfind('.')] + '.1' for ip in ips)
 
 
 # Application definition
@@ -45,9 +55,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'drf_spectacular',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -87,10 +99,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('DATABASE_NAME', 'postgres'),
-        'USER': os.environ.get('DATABASE_USER', 'user'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'user'),
-        'HOST': os.environ.get('DATABASE_HOST', 'db'),
-        'PORT': os.environ.get('DATABASE_PORT', '5432')
+        'USER': os.environ.get('POSTGRES_USER', 'user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'user'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432')
     }
 }
 
@@ -155,16 +167,35 @@ UPLOADS_DIR.mkdir(exist_ok=True)
 LOGGING_DIR = BASE_DIR / 'logs'
 LOGGING_DIR.mkdir(exist_ok=True)
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    handlers=[
-        logging.FileHandler(LOGGING_DIR / 'app.log'),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger('shopapp')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'log.txt',
+            'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 3,
+            'formatter': 'verbose',
+        }
+    },
+    'loggers': {
+        'root': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO'
+        }
+    }
+}
 
 LOGIN_REDIRECT_URL = 'admin/'
 
