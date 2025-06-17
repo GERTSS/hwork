@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.base import kwarg_re
 from django.utils.translation import gettext_lazy as _
+from rest_framework.reverse import reverse_lazy
 
 from myauth.models import Profile
 
@@ -16,6 +18,9 @@ class Product(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     being_under_sanctions = models.BooleanField(default=False)
     crated_by = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='products')
+
+    def get_absolute_url(self):
+        return reverse_lazy('shopapp:product_details', kwargs={'pk': self.pk})
 
 
 class Order(models.Model):

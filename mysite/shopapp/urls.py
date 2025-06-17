@@ -1,8 +1,11 @@
 from . import views
+from .sitemaps import ShopSitemap
+
 from rest_framework.routers import DefaultRouter
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from django.urls import path, include
+from django.contrib.sitemaps.views import sitemap
 
 router = DefaultRouter()
 router.register('products/', views.ProductViewSet)
@@ -10,7 +13,13 @@ router.register('orders/', views.OrderViewSet)
 
 app_name = 'shopapp'
 
+sitemaps={
+    'shop': ShopSitemap
+}
+
 urlpatterns = [
+    path('products/latest/feed/', views.LatestProductsFeed(), name='feed'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('api/', include(router.urls)),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/doc/', SpectacularSwaggerView.as_view(url_name='shopapp:schema'), name='swagger'),

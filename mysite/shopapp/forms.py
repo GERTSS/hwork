@@ -16,3 +16,6 @@ class OrderForm(forms.ModelForm):
         widget = {
             'products': forms.CheckboxSelectMultiple,
         }
+
+class ImportCSVForm(forms.Form):
+    csv_file = forms.FileField(label='Выберите файл')

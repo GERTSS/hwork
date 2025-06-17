@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
+from django.contrib.syndication.views import Feed
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden, JsonResponse
 from django.urls import get_resolver, Resolver404, reverse_lazy
@@ -18,6 +19,18 @@ from shopapp.forms import ProductForm, OrderForm
 
 logger = logging.getLogger('shoapapp')
 
+class LatestProductsFeed(Feed):
+    title = "Новинки магазина"
+    description = "Последние товары в магазине"
+
+    def items(self):
+        return Product.objects.order_by('-date_added')[:10]
+
+    def item_title(self, item):
+        return item.name
+
+    def item_link(self, item):
+        return item.get_absolute_url()
 
 def list_urls(request: HttpRequest):
     urls = []
