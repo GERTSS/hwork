@@ -72,6 +72,14 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/home/gerts/PycharmProjects/python_django/mysite/cache',
+        'TIMEOUT': 60 * 5,
+    }
+}
+
 ROOT_URLCONF = 'mysite.urls'
 
 TEMPLATES = [

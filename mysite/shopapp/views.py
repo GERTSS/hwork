@@ -3,11 +3,18 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.syndication.views import Feed
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden, JsonResponse
+from django.http import HttpRequest, HttpResponseRedirect, HttpResponseForbidden, JsonResponse, Http404
 from django.urls import get_resolver, Resolver404, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from yaml import serialize
+
+from shopapp.serializers import OrderSerializer, ProductSerializer
+from rest_framework.response import Response
+from django.core.cache import cache
 
 import mysite.settings
 from shopapp.models import Product, Order
@@ -18,6 +25,43 @@ import logging
 from shopapp.forms import ProductForm, OrderForm
 
 logger = logging.getLogger('shoapapp')
+
+class UserOrdersAPIView(APIView):
+    def get(self, request, user_id, *args, **kwargs):
+        cache_key = f'user_orders{user_id}'
+        cache_data = cache.get(cache_key)
+        if cache_data is not None:
+            return Response(cache_data, status=200)
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            raise Http404("Пользователь не найден")
+        orders = Order.objects.filter(user=user_id)
+        serializer = OrderSerializer(orders, many=True)
+        cache.set(cache_key, serializer.data, timeout=60 * 5)
+
+        return Response(serializer.data, status=200)
+
+
+class UserOrdersListView(ListView):
+    model = Order
+    template_name = 'shopapp/user_orders'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        self.owner_id = self.kwargs['user_id']
+        try:
+            user = User.objects.get(id=self.owner_id)
+        except User.DoesNotExist:
+            raise Http404("Пользователь не найден")
+        return Order.objects.filter(user=self.owner_id)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['owner_id'] = self.owner_id
+        ownername = User.objects.filter(id=self.owner_id).values_list('username', flat=True).first()
+        context['ownername'] = ownername
+        return context
 
 class LatestProductsFeed(Feed):
     title = "Новинки магазина"
@@ -180,10 +224,6 @@ class OrderExportView(View):
             for order in orders
         ]
         return JsonResponse({'orders': result})
-
-from rest_framework import viewsets
-from shopapp.serializers import OrderSerializer, ProductSerializer
-from rest_framework.response import Response
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()

@@ -24,6 +24,8 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/doc/', SpectacularSwaggerView.as_view(url_name='shopapp:schema'), name='swagger'),
     path('', views.list_urls, name='index'),
+    path('users/<int:user_id>/orders/export/', views.UserOrdersAPIView.as_view(), name='user_orders_export'),
+    path('users/<int:user_id>/orders/', views.UserOrdersListView.as_view(), name='user_orders'),
     path('products/', views.ProductsListView.as_view(), name='list_products'),
     path('products/<int:pk>', views.ProductDetailsView.as_view(), name='product_details'),
     path('orders/', views.OrdersListView.as_view(), name='list_orders'),

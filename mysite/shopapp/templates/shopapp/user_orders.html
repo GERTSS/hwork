@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load cache %}
+<head>
+    <meta charset="UTF-8">
+    <title>Заказы пользователя</title>
+</head>
+<body>
+    {% cache 60 orders_info owner_id%}
+        <h1>Пользователь {{ ownername }} выполнил следующие заказы {{ user_id }}</h1>
+        <ul>
+          {% for order in orders %}
+            <p>Адрес: {{ order.address }}</p>
+            {% if order.promocode %}
+                <p>Промокод: {{ order.promocode }}</p>
+            {% endif %}
+            <p>Дата создания: {{ order.date_create }}</p>
+            {% for product in order.products.all %}
+                <li>
+                    <a href='{% url "shopapp:product_details" product.pk %}'>{{ product.name }}</a>
+                </li>
+            {% endfor %}
+          {% empty %}
+            <li>У пользователя {{ ownername }} ещё нет заказов</li>
+          {% endfor %}
+    {% endcache %}
+</ul>
+</body>
+</html>
