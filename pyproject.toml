@@ -1,0 +1,22 @@
+[project]
+name = "python-django"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "gerts",email = "rifatikmolodets@mail.ru"}
+]
+requires-python = "==3.12.3"
+dependencies = [
+    "django (==4.2)",
+    "djangorestframework (>=3.16.0,<4.0.0)",
+    "django-filter (>=25.1,<26.0)",
+    "drf-spectacular (>=0.28.0,<0.29.0)",
+    "django-debug-toolbar (==4.0.0)",
+    "pillow (>=11.2.1,<12.0.0)",
+    "gunicorn (>=23.0.0,<24.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
