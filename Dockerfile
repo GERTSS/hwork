@@ -3,9 +3,8 @@ FROM python:3.12.3-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential gcc && \
     mkdir -p /root/.local/share/pypoetry && \
-    curl -sSL https://install.python-poetry.org  | python3 -
-
-ENV PATH="/root/.local/share/pypoetry/venv/bin:$PATH"
+    pip install poetry
+    
 ENV POETRY_VIRTUALENVS_CREATE=false
 
 RUN poetry --version
