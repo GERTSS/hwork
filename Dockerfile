@@ -1,9 +1,10 @@
-FROM python:3.12.3-slim
+FROM python:3.9
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends build-essential gcc libpq-dev && \
-    pip install poetry psycopg
+    apt-get install -y --no-install-recommends build-essential gcc && \
+    curl -sSL https://install.python-poetry.org  | python3 -
 
+ENV PATH="/root/.local/share/pypoetry/venv/bin:$PATH"
 ENV POETRY_VIRTUALENVS_CREATE=false
 
 WORKDIR /app
@@ -18,8 +19,8 @@ COPY . .
 EXPOSE 8000
 
 CMD ["sh", "-c", \
-"python /app/mysite/manage.py makemigrations && \
-python /app/mysite/manage.py migrate && \
-python /app/mysite/manage.py create_orders && \
-python /app/mysite/manage.py create_products && \
-gunicorn mysite.wsgi.application --bind 0.0.0.0:8000 "]
+"python manage.py makemigrations && \
+python manage.py migrate && \
+python manage.py create_orders && \
+python manage.py create_products && \
+gunicorn --bind 0.0.0.0:8000 config.wsgi""]
