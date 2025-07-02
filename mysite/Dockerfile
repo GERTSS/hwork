@@ -18,8 +18,8 @@ COPY . .
 EXPOSE 8000
 
 CMD ["sh", "-c", \
-"python /app/mysite/manage.py makemigrations && \
-python /app/mysite/manage.py migrate && \
-python /app/mysite/manage.py create_orders && \
-python /app/mysite/manage.py create_products && \
-gunicorn --bind 0.0.0.0:8000 config.wsgi""]
+"python manage.py makemigrations && \
+python manage.py migrate && \
+python manage.py create_orders && \
+python manage.py create_products && \
+gunicorn mysite.wsgi:application --bind 0.0.0.0:8000 "]
